@@ -24,7 +24,7 @@ struct ExchangeRate: View {
                 .frame(height: 33)
             // exchange rate text
             Text(exchangeRateText)
-            // right currency oimage
+            // right currency image
             Image(rightImage)
                 .resizable()
                 .scaledToFit()

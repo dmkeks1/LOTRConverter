@@ -10,6 +10,10 @@ import SwiftUI
 
 struct SelectCurrency: View {
     @Environment(\.dismiss) var dismiss
+    
+    @Binding var topCurrency: Currency
+    @Binding var bottomCurrency: Currency
+    
     var body: some View {
         ZStack {
             // Parchment Background
@@ -23,20 +27,16 @@ struct SelectCurrency: View {
                     .fontWeight(.bold)
                 // Currency icons
                 // MARK: ForEach Grid
-                LazyVGrid(columns: [GridItem(), GridItem(), GridItem()]) { // 3 mal griditem wegen 3 reihen
-                    ForEach(Currency.allCases ) { currency in
-                        // wenn _ genutz wird sagen wir, dass wir die variable nicht benötigen. wenn wir aber z.b. in dem loop die anzahl der iteration anzeigen wollen, dann müssen wir die variable benennen, z.B. loop in in Text("das ist loop nr \(loop)")
-                        CurrencyIcon(currrencyImage: currency.image, currencyName: currency.name)
-                    }
-                }
+                IconGrid(currency: $topCurrency)
                 
                 
                 // text
                 Text("Select the currency you would like to convert to:")
                     .fontWeight(.bold)
+                    .padding(.top)
                     
                 // curecny icons
-                
+                IconGrid(currency: $bottomCurrency)
                 //done button
                 Button("Done") {
                     dismiss()
@@ -49,10 +49,16 @@ struct SelectCurrency: View {
             }
             .padding()
             .multilineTextAlignment(.center)
+            .foregroundStyle(.black)
         }
     }
 }
 
+
+// because we use @binding we need to change the preview to work again and define new vars
+
 #Preview {
-    SelectCurrency()
+    @Previewable @State var topCurrency: Currency = .silverPenny
+    @Previewable @State var bottomCurrency: Currency = .goldPenny
+    SelectCurrency(topCurrency: $topCurrency, bottomCurrency: $bottomCurrency)
 }
